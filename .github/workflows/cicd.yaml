@@ -26,9 +26,9 @@ jobs:
 
     - name: Docker build 
       env:
-        application_properties URI: ${{ secrets.application_properties_URI }}
+        application_properties: ${{ secrets.application_properties_URI }}
       run: |
-        docker build --network=host -t netflix_backend:latest .
+        docker build --network=host -t netflix_backend_cr:latest .
 
     - name: Tag and Push Image to Amazon ECR
       env:
