@@ -17,6 +17,9 @@ jobs:
     - name: Docker build 
       # This block safely injects your database password into the build context memory
       env:
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_PASSWORD: |
+          ${{ secrets.DB_PASSWORD }} 
+          ls -la
+          cat .env
       run: |
         docker build --network=host -t netflix_backend:latest .
