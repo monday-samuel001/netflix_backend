@@ -18,5 +18,5 @@ jobs:
       env:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
      run: |
-        # docker build --network=host -t netflix-backend .
+        docker build --network=host -t netflix-backend .
 
