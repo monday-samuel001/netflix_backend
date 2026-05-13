@@ -32,6 +32,8 @@ build/
 ### VS Code ###
 .vscode/
 
-### Environment ###
+##Environment ###
 src/main/resources/.env
 src/main/resources/application.properties
+application.properties
+.gitignore
