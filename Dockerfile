@@ -1,35 +1,20 @@
-FROM ubuntu
-
-# Install necessary packages
-#============================
-RUN apt-get update && apt-get install -y 
-RUN apt install openjdk-17-jre-headless -y
-RUN apt install maven -y
-
-# Set the working directory
+FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /app
 
-# Copy source files and pom.xml
-COPY application.properties /app/src/main/resources/application.properties
-COPY ./src /app/src
-COPY ./pom.xml /app
+# 1. Copy ONLY the configuration file first
+COPY pom.xml ./
 
-# Build the application
-RUN mvn -f /app/pom.xml clean package
+# 2. Download the libraries (Docker will freeze and cache this step)
+RUN mvn dependency:go-offline
+
+# 3. Copy source files ONLY after libraries are downloaded
+COPY ./src /app/src
+
+# 4. Build the application package
+RUN mvn clean package -DskipTests
+
 RUN ls -la /app/target
 RUN cp /app/target/*.jar /app/app.jar
-# Copy the built JAR file to the container
-
 
 EXPOSE 8080
-
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
-
-
-
-# ==========================
-# FROM eclipse-temurin:25
-# RUN mkdir /opt/app
-# COPY japp.jar /opt/app
-# CMD ["java", "-jar", "/opt/app/japp.jar"]
