@@ -13,10 +13,10 @@ jobs:
     - name: Check out the repository
       uses: actions/checkout@v4
 
-    - name: Docker Build
+    # Built with network flag to ensure maven dependencies can download smoothly
+    - name: Docker build 
       # This block safely injects your database password into the build context memory
       env:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-     run: |
-        docker build --network=host -t netflix-backend .
-
+      run: |
+        docker build --network=host -t netflix_backend:latest .
